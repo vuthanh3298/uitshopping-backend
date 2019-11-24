@@ -18,7 +18,7 @@
     "nodemon": "^1.19.4"
   },
   "scripts": {
-    "dev": "nodemon --inspect main.js",
+    "dev": "nodemon --inspect index.js",
     "start":"node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
