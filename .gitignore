@@ -1,0 +1,11 @@
+node_modules
+db.json
+.env
+customers.html
+index.html
+integrations.html
+products.html
+reports.html
+style.css
+orders.html
+sudo
