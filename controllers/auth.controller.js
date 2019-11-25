@@ -1,16 +1,20 @@
 var md5=require('md5');
-var db=require('../db');
+var User = require('../models/user.model');
+// var db=require('../db');
 
 
 module.exports.login = function(req,res){
 	res.render('auth/login');
 };
 
-module.exports.postLogin = function(req,res){
+module.exports.postLogin = async function(req,res){
 	var email = req.body.email;
 	var password = req.body.password;
-	var user = db.get('users').find({ email: email }).value();
 
+	var user = await User.find({	email:email	}).then(function(user){
+			return user[0];
+		});
+	
 	if(!user){
 		res.render('auth/login', {
 			errors: [
@@ -28,10 +32,12 @@ module.exports.postLogin = function(req,res){
 			],
 			values: req.body
 		});
+		
 		return;
 	}
 	res.cookie('userId',user.id,{
 		signed:true
 	});
 	res.redirect('/users');
+
 };
