@@ -46,3 +46,7 @@ module.exports.delete = async function(req,res){
 	});
 	res.redirect('/products');
 }
+module.exports.update =async function(req,res){
+	var id =mongoose.Types.ObjectId(req.params.id);
+	
+}
