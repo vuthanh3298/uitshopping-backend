@@ -2,6 +2,7 @@ require('dotenv').config();
 
 console.log(process.env.SESSION_SECRET);
 var express = require('express');
+// var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 
@@ -24,6 +25,7 @@ var port= process.env.PORT || 3000;
 var app = express();
 app.set('view engine', 'pug');
 app.set('views','./views');
+// app.use(bodyParser.json())
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
@@ -40,7 +42,7 @@ app.get('/',authMiddleware.requireAuth, function(req,res){
 
 app.use('/users',authMiddleware.requireAuth,userRoute);
 app.use('/auth',authRoute);
-app.use('/products',productRoute);
+app.use('/products',authMiddleware.requireAuth,productRoute);
 app.use('/cart',authMiddleware.requireAuth,cartRoute);
 
 app.use('/api/products',apiProductRoute);

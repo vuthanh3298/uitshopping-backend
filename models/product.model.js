@@ -1,10 +1,13 @@
 var mongoose = require('mongoose');
 
 var productSchema = new mongoose.Schema({
-	name:String,
-	image: String,
-	description:String,
-	price:String
+	ten:String,
+	mota: String,
+	gia:String,
+	giacu:String,
+	tilegiamgia:String,
+	madanhmuc:String,
+	anh:String
 });
 
 var Product = mongoose.model('Product',productSchema,'products');

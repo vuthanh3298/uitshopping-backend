@@ -11,7 +11,7 @@ module.exports.postLogin = async function(req,res){
 	var email = req.body.email;
 	var password = req.body.password;
 
-	var user = await User.find({	email:email	}).then(function(user){
+	var user = await User.find({ email:email }).then(function(user){
 			return user[0];
 		});
 	
