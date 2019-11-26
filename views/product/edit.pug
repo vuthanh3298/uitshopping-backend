@@ -1,0 +1,38 @@
+extends ../layouts/common.pug
+block content
+
+	h1 Sửa sản phẩm
+
+	if errors
+		each error in errors
+			.alert.alert-danger=error
+
+	form(action="/products/delete/{{product.id}}?_method=PUT",method="POST")
+		.form-group
+			label(for="ten") Tên sản phẩm
+			input#ten.form-control(name="ten",type="text",value=values ? values.ten :"")
+
+		.form-group
+			label(for="mota") Mô tả
+			input#mota.form-control(name="mota",type="text",value=values ? values.mota :"")
+		
+		.form-group
+			label(for="gia") Giá
+			input#gia.form-control(name="gia",type="text",value=values ? values.gia :"")
+
+		.form-group
+			label(for="giacu") Giá cũ
+			input#giacu.form-control(name="giacu",type="text",value=values ? values.giacu :"")
+
+		.form-group
+			label(for="tilegiamgia") Tỉ lệ giảm giá
+			input#tilegiamgia.form-control(name="tilegiamgia",type="text",value=values ? values.tilegiamgia :"")
+		.form-group
+			label(for="madanhmuc") Mã danh mục
+			input#madanhmuc.form-control(name="madanhmuc",type="text",value=values ? values.madanhmuc :"")
+
+		.form-group
+			label(for="anh") Ảnh
+			input#anh.form-control-file(name="anh",type="file")
+
+		button.btn.btn-primary Update

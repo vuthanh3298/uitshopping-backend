@@ -19,6 +19,7 @@ var apiProductRoute = require('./api/routes/product.route');
 
 var authMiddleware = require('./middlewares/auth.middleware');
 var sessionMiddleware = require('./middlewares/session.middleware');
+var methodOverride = require('method-override');
 
 var port= process.env.PORT || 3000;
 
@@ -31,7 +32,7 @@ app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(cookieParser(process.env.SESSION_SECRET))
 app.use(sessionMiddleware);
-
+app.use(methodOverride('_method'));
 app.use(express.static('public'));
 
 app.get('/',authMiddleware.requireAuth, function(req,res){
