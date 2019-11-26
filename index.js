@@ -1,54 +1,56 @@
 require('dotenv').config();
-
-console.log(process.env.SESSION_SECRET);
 var express = require('express');
-// var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
+var app = express();
+var port = process.env.PORT || 3000;
+app.set('view engine', 'pug');
+app.set('views', './views');
 var mongoose = require('mongoose');
-
 mongoose.connect(process.env.MONGO_URL);
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-var userRoute = require('./routes/user.route');
-var authRoute = require('./routes/auth.route');
-var productRoute = require('./routes/product.route');
-var cartRoute = require('./routes/cart.route');
-// Set some defaults (required if your JSON file is empty)
-
-var apiProductRoute = require('./api/routes/product.route');
-var apiUserRoute = require('./api/routes/user.route');
-
-var authMiddleware = require('./middlewares/auth.middleware');
+var cookieParser = require('cookie-parser');
 var sessionMiddleware = require('./middlewares/session.middleware');
-var methodOverride = require('method-override');
 
-var port= process.env.PORT || 3000;
-
-var app = express();
-app.set('view engine', 'pug');
-app.set('views','./views');
-// app.use(bodyParser.json())
-
-app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(cookieParser(process.env.SESSION_SECRET))
 app.use(sessionMiddleware);
-app.use(methodOverride('_method'));
 app.use(express.static('public'));
 
-app.get('/',authMiddleware.requireAuth, function(req,res){
-	res.render('index',{
-		name:'Tiki'
-	});
+var cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 });
 
-app.use('/users',authMiddleware.requireAuth,userRoute);
-app.use('/auth',authRoute);
-app.use('/products',authMiddleware.requireAuth,productRoute);
-app.use('/cart',authMiddleware.requireAuth,cartRoute);
+var sanPhamApiRoute = require('./api/routes/sanpham.route');
+app.use('/api/sanphams', sanPhamApiRoute);
+var danhMucApiRoute = require('./api/routes/danhmuc.route');
+app.use('/api/danhmucs', danhMucApiRoute);
+var donHangApiRoute = require('./api/routes/donhang.route');
+app.use('/api/donhangs', donHangApiRoute);
+var apiUserRoute = require('./api/routes/user.route');
+app.use('/api/users', apiUserRoute);
 
-app.use('/api/products',apiProductRoute);
-app.use('/api/users',apiUserRoute);
-app.listen(port, function(){
-	console.log('Example app listening on port'+ port);
+var authMiddleware = require('./middlewares/auth.middleware');
+
+var danhMucRoute = require('./routes/danhmuc.route');
+app.use('/danhmucs', danhMucRoute);
+var userRoute = require('./routes/user.route');
+app.use('/users', authMiddleware.requireAuth, userRoute);
+var authRoute = require('./routes/auth.route');
+app.use('/auth', authRoute);
+var productRoute = require('./routes/product.route');
+app.use('/products', authMiddleware.requireAuth, productRoute);
+
+app.get('/', authMiddleware.requireAuth, function(req, res) {
+    res.render('index', {
+        name: 'Tiki'
+    });
+});
+app.listen(port, function() {
+    console.log('Example app listening on port' + port);
 });
