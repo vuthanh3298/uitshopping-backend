@@ -7,7 +7,7 @@ block content
 		each error in errors
 			.alert.alert-danger=error
 
-	form(action="/products/delete/{{product.id}}?_method=PUT",method="POST")
+	form(action="/products/update/" + product.id,method="POST")
 		.form-group
 			label(for="ten") Tên sản phẩm
 			input#ten.form-control(name="ten",type="text",value=values ? values.ten :"")

@@ -59,10 +59,8 @@ module.exports.edit = async function(req,res){
 
 module.exports.update =async function(req,res){
 	var id =mongoose.Types.ObjectId(req.params.id);
-	var product = await Product.findById(id,function(err,product){
-		return product;
+	var product = await Product.findByIdAndUpdate(id,{$set:req.body},function(err,product){
+		if(err) return err;
 	});
-  		product.save();
   		res.redirect('/products');
-
 }

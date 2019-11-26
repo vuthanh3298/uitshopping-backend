@@ -16,6 +16,7 @@ var cartRoute = require('./routes/cart.route');
 // Set some defaults (required if your JSON file is empty)
 
 var apiProductRoute = require('./api/routes/product.route');
+var apiUserRoute = require('./api/routes/user.route');
 
 var authMiddleware = require('./middlewares/auth.middleware');
 var sessionMiddleware = require('./middlewares/session.middleware');
@@ -47,6 +48,7 @@ app.use('/products',authMiddleware.requireAuth,productRoute);
 app.use('/cart',authMiddleware.requireAuth,cartRoute);
 
 app.use('/api/products',apiProductRoute);
+app.use('/api/users',apiUserRoute);
 app.listen(port, function(){
 	console.log('Example app listening on port'+ port);
 });
